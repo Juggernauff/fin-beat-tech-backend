@@ -1,0 +1,25 @@
+Проект `fin-beat-tech-backend` использует БД `fin_beat_tech`.
+В базе данных содержится одна таблица `Entity`.
+Её структуру можно увидеть в скрипте по созданию таблицы.
+
+create table "Entity"
+(
+    id    serial primary key,
+    code  integer not null,
+    value text    not null
+);
+
+alter table "Entity"
+    owner to postgres;
+
+Тестовые данные:
+
+INSERT INTO public."Entity" (id, code, value) VALUES (56, 1, 'Alex');
+INSERT INTO public."Entity" (id, code, value) VALUES (57, 2, 'Danila');
+INSERT INTO public."Entity" (id, code, value) VALUES (58, 3, 'Daniil');
+INSERT INTO public."Entity" (id, code, value) VALUES (59, 11, 'Danil');
+INSERT INTO public."Entity" (id, code, value) VALUES (60, 12, 'Katya');
+INSERT INTO public."Entity" (id, code, value) VALUES (61, 13, 'Vika');
+INSERT INTO public."Entity" (id, code, value) VALUES (62, 21, 'Marina');
+INSERT INTO public."Entity" (id, code, value) VALUES (63, 22, 'Aselya');
+INSERT INTO public."Entity" (id, code, value) VALUES (64, 23, 'Max');
