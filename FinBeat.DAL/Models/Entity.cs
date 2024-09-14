@@ -1,0 +1,9 @@
+﻿namespace FinBeat.DAL.Models
+{
+    public class Entity
+    {
+        public int Id { get; set; }
+        public int Code { get; set; }
+        public string Value { get; set; }
+    }
+}
