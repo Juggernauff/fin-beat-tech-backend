@@ -22,12 +22,12 @@ namespace FinBeat.DAL.Repositories.Implementation
             return await _context.Database.ExecuteSqlRawAsync(sql, cancellationToken);
         }
 
-        public async Task<int> AddEntitiesAsync(List<Entity> entities, CancellationToken cancellationToken = default)
+        public string BuildInsertQuery(List<Entity> entities, out List<NpgsqlParameter> parameters)
         {
             var sb = new StringBuilder();
             sb.AppendLine($"INSERT INTO {nameof(Entity)} (code, value) VALUES");
 
-            var parameters = new List<NpgsqlParameter>();
+            parameters = new List<NpgsqlParameter>();
             for (int i = 0; i < entities.Count; i++)
             {
                 if (i > 0) sb.AppendLine(",");
@@ -38,17 +38,22 @@ namespace FinBeat.DAL.Repositories.Implementation
             }
 
             sb.AppendLine(";");
-            var sql = sb.ToString();
+            return sb.ToString();
+        }
+
+        public async Task<int> AddEntitiesAsync(List<Entity> entities, CancellationToken cancellationToken = default)
+        {
+            var sql = BuildInsertQuery(entities, out var parameters);
 
             return await _context.Database.ExecuteSqlRawAsync(sql, parameters, cancellationToken);
         }
 
-        public async Task<List<Entity>> GetEntitiesWithPaginationAsync(int pageNumber, int pageSize, EntityFilter filter, CancellationToken cancellationToken = default)
+        public string BuildSelectQuery(EntityFilter filter, int pageNumber, int pageSize, out List<NpgsqlParameter> parameters)
         {
             var sb = new StringBuilder();
             sb.AppendLine($"SELECT id, code, value FROM {nameof(Entity)} WHERE 1=1");
 
-            var parameters = new List<NpgsqlParameter>();
+            parameters = new List<NpgsqlParameter>();
 
             if (filter.MinId.HasValue)
             {
@@ -86,7 +91,12 @@ namespace FinBeat.DAL.Repositories.Implementation
             parameters.Add(new NpgsqlParameter("@PageSize", pageSize));
             parameters.Add(new NpgsqlParameter("@Offset", (pageNumber - 1) * pageSize));
 
-            var sql = sb.ToString();
+            return sb.ToString();
+        }
+
+        public async Task<List<Entity>> GetEntitiesWithPaginationAsync(int pageNumber, int pageSize, EntityFilter filter, CancellationToken cancellationToken = default)
+        {
+            var sql = BuildSelectQuery(filter, pageNumber, pageSize, out var parameters);
 
             return await _context.Entities.FromSqlRaw(sql, parameters.ToArray()).ToListAsync(cancellationToken);
         }

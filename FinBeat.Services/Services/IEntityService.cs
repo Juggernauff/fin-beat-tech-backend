@@ -1,5 +1,4 @@
-﻿using FinBeat.DAL.Models;
-using FinBeat.Services.Models;
+﻿using FinBeat.Services.Models;
 
 namespace FinBeat.Services.Services
 {
@@ -10,7 +9,7 @@ namespace FinBeat.Services.Services
         /// </summary>
         /// <param name="entities">A collection of new entities to be added.</param>
         /// <param name="cancellationToken">Token to cancel the operation if needed.</param>
-        public Task RefreshEntitiesAsync(IEnumerable<EntityRequestDto> entities, CancellationToken cancellationToken);
+        Task RefreshEntitiesAsync(IEnumerable<EntityRequestDto> entities, CancellationToken cancellationToken);
 
         /// <summary>
         /// Retrieves paginated entities from the database.
@@ -20,6 +19,6 @@ namespace FinBeat.Services.Services
         /// <param name="filterDto">The filter criteria for sorting and filtering data.</param>
         /// <param name="cancellationToken">Token to cancel the operation if needed.</param>
         /// <returns>A task that represents the asynchronous operation. The task result contains a collection of entities.</returns>
-        public Task<IEnumerable<EntityResponseDto>> GetPaginatedEntitiesAsync(int pageNumber, int pageSize, EntityFilterDto filterDto, CancellationToken cancellationToken);
+        Task<IEnumerable<EntityResponseDto>> GetPaginatedEntitiesAsync(int pageNumber, int pageSize, EntityFilterDto filterDto, CancellationToken cancellationToken);
     }
 }
