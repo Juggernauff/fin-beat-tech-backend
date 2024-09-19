@@ -33,7 +33,6 @@ namespace FinBeat.DAL.Repositories.Implementation
                 if (i > 0) sb.AppendLine(",");
                 sb.Append($" (@Code{i}, @Value{i})");
 
-                parameters.Add(new NpgsqlParameter($"@id{i}", entities[i].Id));
                 parameters.Add(new NpgsqlParameter($"@Code{i}", entities[i].Code));
                 parameters.Add(new NpgsqlParameter($"@Value{i}", entities[i].Value));
             }
