@@ -6,6 +6,11 @@ namespace FinBeat.DAL.Extensions
 {
     public static class ModelBuilderExtension
     {
+        /// <summary>
+        /// Converts a string to snake_case style.
+        /// </summary>
+        /// <param name="input">The input string.</param>
+        /// <returns>A string in snake_case format.</returns>
         private static string ToSnakeCase(this string input)
         {
             if (string.IsNullOrEmpty(input))
@@ -16,6 +21,10 @@ namespace FinBeat.DAL.Extensions
             return Regex.Match(input, "^_+")?.ToString() + Regex.Replace(input, "([a-z])([0-9A-Z])", "$1_$2").ToLower();
         }
 
+        /// <summary>
+        /// Updates table names in the data model, converting them to snake_case style.
+        /// </summary>
+        /// <param name="modelBuilder">The data model to update.</param>
         private static void UpdateTableNames(ModelBuilder modelBuilder)
         {
             foreach (IMutableEntityType entityType in modelBuilder.Model.GetEntityTypes())
@@ -24,6 +33,10 @@ namespace FinBeat.DAL.Extensions
             }
         }
 
+        /// <summary>
+        /// Updates column names in the data model, converting them to snake_case style.
+        /// </summary>
+        /// <param name="modelBuilder">The data model to update.</param>
         private static void UpdateColumnNames(ModelBuilder modelBuilder)
         {
             foreach (IMutableEntityType entityType in modelBuilder.Model.GetEntityTypes())
@@ -40,6 +53,10 @@ namespace FinBeat.DAL.Extensions
             }
         }
 
+        /// <summary>
+        /// Updates key names in the data model, converting them to snake_case style.
+        /// </summary>
+        /// <param name="modelBuilder">The data model to update.</param>
         private static void UpdateKeyNames(ModelBuilder modelBuilder)
         {
             foreach (IMutableEntityType entityType in modelBuilder.Model.GetEntityTypes())
@@ -51,6 +68,10 @@ namespace FinBeat.DAL.Extensions
             }
         }
 
+        /// <summary>
+        /// Updates foreign key names in the data model, converting them to snake_case style.
+        /// </summary>
+        /// <param name="modelBuilder">The data model to update.</param>
         private static void UpdateForeignKeyNames(ModelBuilder modelBuilder)
         {
             foreach (IMutableEntityType entityType in modelBuilder.Model.GetEntityTypes())
@@ -62,6 +83,10 @@ namespace FinBeat.DAL.Extensions
             }
         }
 
+        /// <summary>
+        /// Updates index names in the data model, converting them to snake_case style.
+        /// </summary>
+        /// <param name="modelBuilder">The data model to update.</param>
         private static void UpdateIndexNames(ModelBuilder modelBuilder)
         {
             foreach (IMutableEntityType entityType in modelBuilder.Model.GetEntityTypes())
