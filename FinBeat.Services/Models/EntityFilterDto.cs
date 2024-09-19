@@ -1,5 +1,8 @@
 ﻿namespace FinBeat.Services.Models
 {
+    /// <summary>
+    /// The data transfer object to filter by entities.
+    /// </summary>
     public class EntityFilterDto
     {
         public int? MinId { get; set; }

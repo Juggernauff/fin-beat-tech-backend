@@ -31,10 +31,10 @@ namespace FinBeat.Services.Services.Implementation
                 .Map<IEnumerable<Entity>>(entityDtos)
                 .OrderBy(dto => dto.Code);
 
-            await _repository.DeleteAllAsync(cancellationToken);
-            await _repository.InsertAsync(entities, cancellationToken);
+            var numDeleted = await _repository.DeleteAllAsync(cancellationToken);
+            var numAdded = await _repository.AddEntitiesAsync(entities.ToList(), cancellationToken);
 
-            _logger.LogInformation($"Finish {nameof(EntityService)}.{nameof(RefreshEntitiesAsync)}");
+            _logger.LogInformation($"Finish {nameof(EntityService)}.{nameof(RefreshEntitiesAsync)}; Deleted: {numDeleted}; Added: {numAdded}.");
         }
 
         public async Task<IEnumerable<EntityResponseDto>> GetPaginatedEntitiesAsync(int page, int size, EntityFilterDto filterDto, CancellationToken cancellationToken)
@@ -42,7 +42,7 @@ namespace FinBeat.Services.Services.Implementation
             _logger.LogInformation($"Start {nameof(EntityService)}.{nameof(GetPaginatedEntitiesAsync)}");
 
             var filter = _mapper.Map<EntityFilter>(filterDto);
-            var entities = await _repository.GetPaginatedAsync(page, size, filter, cancellationToken);
+            var entities = await _repository.GetEntitiesWithPaginationAsync(page, size, filter, cancellationToken);
             var entityDtos = _mapper.Map<IEnumerable<EntityResponseDto>>(entities);
 
             _logger.LogInformation($"Finish {nameof(EntityService)}.{nameof(GetPaginatedEntitiesAsync)}");

@@ -22,6 +22,12 @@ namespace FinBeat.API.Controllers.V1
             _entityService = entityService;
         }
 
+        /// <summary>
+        /// Overwrites the list of objects in the database.
+        /// </summary>
+        /// <param name="entities">The list of entities to be added or updated.</param>
+        /// <param name="cancellationToken">Cancellation token to cancel the operation.</param>
+        /// <returns>An <see cref="IActionResult"/> indicating the result of the operation.</returns>
         [MapToApiVersion("1.0")]
         [HttpPost]
         [ProducesResponseType(typeof(void), (int)HttpStatusCode.OK)]
@@ -38,6 +44,14 @@ namespace FinBeat.API.Controllers.V1
             return Ok();
         }
 
+        /// <summary>
+        /// Retrieves a paginated list of entities from the database.
+        /// </summary>
+        /// <param name="page">The page number to retrieve (starting from 1).</param>
+        /// <param name="size">The number of entities per page.</param>
+        /// <param name="filterDto">Filter criteria to apply to the entity search.</param>
+        /// <param name="cancellationToken">Cancellation token to cancel the operation.</param>
+        /// <returns>A list of entities matching the specified criteria.</returns>
         [MapToApiVersion("1.0")]
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<EntityResponseDto>), (int)HttpStatusCode.OK)]

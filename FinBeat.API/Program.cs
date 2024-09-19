@@ -1,10 +1,12 @@
 using Asp.Versioning;
 using FinBeat.API.Middlewares;
-using FinBeat.DAL.Repositories;
-using FinBeat.DAL.Repositories.Implementation;
+using FinBeat.DAL;
+using FinBeat.DAL.Extensions;
+using FinBeat.DAL.Services;
 using FinBeat.Services.Mappings;
 using FinBeat.Services.Services;
 using FinBeat.Services.Services.Implementation;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -45,20 +47,19 @@ builder.Services.AddHealthChecks()
     .AddNpgSql(connectionString, name: "PostgreSQL");
 
 builder.Services.AddAutoMapper(typeof(MappingProfile));
-builder.Services.AddScoped<IEntityRepository>(provider => new EntityRepository(connectionString));
+builder.Services
+    .AddDal(builder.Configuration)
+    .AddRepositories();
 builder.Services.AddScoped<IEntityService, EntityService>();
 
 var app = builder.Build();
 
+var dbInitializer = app.Services.GetRequiredService<IDatabaseInitializer>();
+await dbInitializer.InitializeAsync();
+
 app.UseMiddleware<ErrorHandlingMiddleware>();
 
 app.UseCors("AllowSpecificOrigin");
-
-using (var scope = app.Services.CreateScope())
-{
-    var repository = scope.ServiceProvider.GetRequiredService<IEntityRepository>();
-    await repository.EnsureTableExistsAsync();
-}
 
 if (app.Environment.IsDevelopment())
 {
